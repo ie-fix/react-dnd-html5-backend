@@ -6,13 +6,13 @@ import { getNodeClientOffset, getEventClientOffset, getDragPreviewOffset } from 
 import { createNativeDragSource, matchNativeItemType } from './NativeDragSources';
 import * as NativeTypes from './NativeTypes';
 
-let method = "addEventListener";
-let method2 = "removeEventListener";
-let pref   = "";
+let _addEventListener = "addEventListener";
+let _removeEventListener = "removeEventListener";
+let _on_   = "";
 if(!window.addEventListener){
-  method = "attachEvent";
-  method2 ="detachEvent";
-  pref = "on";
+  _addEventListener = "attachEvent";
+  _removeEventListener ="detachEvent";
+  _on_ = "on";
 }
 export default class HTML5Backend {
   constructor(manager) {
@@ -65,29 +65,29 @@ export default class HTML5Backend {
   }
 
   addEventListeners(target) {
-    target[method](pref+'dragstart', this.handleTopDragStart);
-    target[method](pref+'dragstart', this.handleTopDragStartCapture, true);
-    target[method](pref+'dragend', this.handleTopDragEndCapture, true);
-    target[method](pref+'dragenter', this.handleTopDragEnter);
-    target[method](pref+'dragenter', this.handleTopDragEnterCapture, true);
-    target[method](pref+'dragleave', this.handleTopDragLeaveCapture, true);
-    target[method](pref+'dragover', this.handleTopDragOver);
-    target[method](pref+'dragover', this.handleTopDragOverCapture, true);
-    target[method](pref+'drop', this.handleTopDrop);
-    target[method](pref+'drop', this.handleTopDropCapture, true);
+    target[_addEventListener](_on_+'dragstart', this.handleTopDragStart);
+    target[_addEventListener](_on_+'dragstart', this.handleTopDragStartCapture, true);
+    target[_addEventListener](_on_+'dragend', this.handleTopDragEndCapture, true);
+    target[_addEventListener](_on_+'dragenter', this.handleTopDragEnter);
+    target[_addEventListener](_on_+'dragenter', this.handleTopDragEnterCapture, true);
+    target[_addEventListener](_on_+'dragleave', this.handleTopDragLeaveCapture, true);
+    target[_addEventListener](_on_+'dragover', this.handleTopDragOver);
+    target[_addEventListener](_on_+'dragover', this.handleTopDragOverCapture, true);
+    target[_addEventListener](_on_+'drop', this.handleTopDrop);
+    target[_addEventListener](_on_+'drop', this.handleTopDropCapture, true);
   }
 
   removeEventListeners(target) {
-    target[method2].removeEventListener(pref+'dragstart', this.handleTopDragStart);
-    target[method2].removeEventListener(pref+'dragstart', this.handleTopDragStartCapture, true);
-    target[method2].removeEventListener(pref+'dragend', this.handleTopDragEndCapture, true);
-    target[method2].removeEventListener(pref+'dragenter', this.handleTopDragEnter);
-    target[method2].removeEventListener(pref+'dragenter', this.handleTopDragEnterCapture, true);
-    target[method2].removeEventListener(pref+'dragleave', this.handleTopDragLeaveCapture, true);
-    target[method2].removeEventListener(pref+'dragover', this.handleTopDragOver);
-    target[method2].removeEventListener(pref+'dragover', this.handleTopDragOverCapture, true);
-    target[method2].removeEventListener(pref+'drop', this.handleTopDrop);
-    target[method2].removeEventListener(pref+'drop', this.handleTopDropCapture, true);
+    target[_removeEventListener](_on_+'dragstart', this.handleTopDragStart);
+    target[_removeEventListener](_on_+'dragstart', this.handleTopDragStartCapture, true);
+    target[_removeEventListener](_on_+'dragend', this.handleTopDragEndCapture, true);
+    target[_removeEventListener](_on_+'dragenter', this.handleTopDragEnter);
+    target[_removeEventListener](_on_+'dragenter', this.handleTopDragEnterCapture, true);
+    target[_removeEventListener](_on_+'dragleave', this.handleTopDragLeaveCapture, true);
+    target[_removeEventListener](_on_+'dragover', this.handleTopDragOver);
+    target[_removeEventListener](_on_+'dragover', this.handleTopDragOverCapture, true);
+    target[_removeEventListener](_on_+'drop', this.handleTopDrop);
+    target[_removeEventListener](_on_+'drop', this.handleTopDropCapture, true);
   }
 
   connectDragPreview(sourceId, node, options) {
@@ -108,15 +108,15 @@ export default class HTML5Backend {
     const handleSelectStart = (e) => this.handleSelectStart(e, sourceId);
 
     node.setAttribute('draggable', true);
-    node.addEventListener('dragstart', handleDragStart);
-    node.addEventListener('selectstart', handleSelectStart);
+    node[_addEventListener](_on_+'dragstart', handleDragStart);
+    node[_addEventListener](_on_+'selectstart', handleSelectStart);
 
     return () => {
       delete this.sourceNodes[sourceId];
       delete this.sourceNodeOptions[sourceId];
 
-      node.removeEventListener('dragstart', handleDragStart);
-      node.removeEventListener('selectstart', handleSelectStart);
+      node[_removeEventListener](_on_+'dragstart', handleDragStart);
+      node[_removeEventListener](_on_+'selectstart', handleSelectStart);
       node.setAttribute('draggable', false);
     };
   }
@@ -126,14 +126,14 @@ export default class HTML5Backend {
     const handleDragOver = (e) => this.handleDragOver(e, targetId);
     const handleDrop = (e) => this.handleDrop(e, targetId);
 
-    node.addEventListener('dragenter', handleDragEnter);
-    node.addEventListener('dragover', handleDragOver);
-    node.addEventListener('drop', handleDrop);
+    node[_addEventListener](_on_+'dragenter', handleDragEnter);
+    node[_addEventListener](_on_+'dragover', handleDragOver);
+    node[_addEventListener](_on_+'drop', handleDrop);
 
     return () => {
-      node.removeEventListener('dragenter', handleDragEnter);
-      node.removeEventListener('dragover', handleDragOver);
-      node.removeEventListener('drop', handleDrop);
+      node[_removeEventListener](_on_+'dragenter', handleDragEnter);
+      node[_removeEventListener](_on_+'dragover', handleDragOver);
+      node[_removeEventListener](_on_+'drop', handleDrop);
     };
   }
 
@@ -188,7 +188,7 @@ export default class HTML5Backend {
     // On Firefox, if mousemove fires, the drag is over but browser failed to tell us.
     // This is not true for other browsers.
     if (isFirefox()) {
-      window.addEventListener('mousemove', this.endDragNativeItem, true);
+      window[_addEventListener](_on_+'mousemove', this.endDragNativeItem, true);
     }
   }
 
@@ -198,7 +198,7 @@ export default class HTML5Backend {
     }
 
     if (isFirefox()) {
-      window.removeEventListener('mousemove', this.endDragNativeItem, true);
+      window[_removeEventListener](_on_+'mousemove', this.endDragNativeItem, true);
     }
 
     this.actions.endDrag();
@@ -227,7 +227,7 @@ export default class HTML5Backend {
     // Receiving a mouse event in the middle of a dragging operation
     // means it has ended and the drag source node disappeared from DOM,
     // so the browser didn't dispatch the dragend event.
-    window.addEventListener('mousemove', this.endDragIfSourceWasRemovedFromDOM, true);
+    window[_addEventListener](_on_+'mousemove', this.endDragIfSourceWasRemovedFromDOM, true);
   }
 
   clearCurrentDragSourceNode() {
@@ -235,7 +235,7 @@ export default class HTML5Backend {
       this.currentDragSourceNode = null;
       this.currentDragSourceNodeOffset = null;
       this.currentDragSourceNodeOffsetChanged = false;
-      window.removeEventListener('mousemove', this.endDragIfSourceWasRemovedFromDOM, true);
+      window[_removeEventListener](_on_+'mousemove', this.endDragIfSourceWasRemovedFromDOM, true);
       return true;
     }
 
