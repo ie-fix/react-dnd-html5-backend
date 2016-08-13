@@ -55,31 +55,39 @@ export default class HTML5Backend {
     this.removeEventListeners(window);
     this.clearCurrentDragSourceNode();
   }
+  let method = "addEventListener";
+  let method2 = "removeEventListener";
+  let pref   = "";
+  if(!target.addEventListener){
+    method = "attachEvent";
+    method2 ="detachEvent";
+    pref = "on";
+  }
 
   addEventListeners(target) {
-    target.addEventListener('dragstart', this.handleTopDragStart);
-    target.addEventListener('dragstart', this.handleTopDragStartCapture, true);
-    target.addEventListener('dragend', this.handleTopDragEndCapture, true);
-    target.addEventListener('dragenter', this.handleTopDragEnter);
-    target.addEventListener('dragenter', this.handleTopDragEnterCapture, true);
-    target.addEventListener('dragleave', this.handleTopDragLeaveCapture, true);
-    target.addEventListener('dragover', this.handleTopDragOver);
-    target.addEventListener('dragover', this.handleTopDragOverCapture, true);
-    target.addEventListener('drop', this.handleTopDrop);
-    target.addEventListener('drop', this.handleTopDropCapture, true);
+    target[method](pref+'dragstart', this.handleTopDragStart);
+    target[method](pref+'dragstart', this.handleTopDragStartCapture, true);
+    target[method](pref+'dragend', this.handleTopDragEndCapture, true);
+    target[method](pref+'dragenter', this.handleTopDragEnter);
+    target[method](pref+'dragenter', this.handleTopDragEnterCapture, true);
+    target[method](pref+'dragleave', this.handleTopDragLeaveCapture, true);
+    target[method](pref+'dragover', this.handleTopDragOver);
+    target[method](pref+'dragover', this.handleTopDragOverCapture, true);
+    target[method](pref+'drop', this.handleTopDrop);
+    target[method](pref+'drop', this.handleTopDropCapture, true);
   }
 
   removeEventListeners(target) {
-    target.removeEventListener('dragstart', this.handleTopDragStart);
-    target.removeEventListener('dragstart', this.handleTopDragStartCapture, true);
-    target.removeEventListener('dragend', this.handleTopDragEndCapture, true);
-    target.removeEventListener('dragenter', this.handleTopDragEnter);
-    target.removeEventListener('dragenter', this.handleTopDragEnterCapture, true);
-    target.removeEventListener('dragleave', this.handleTopDragLeaveCapture, true);
-    target.removeEventListener('dragover', this.handleTopDragOver);
-    target.removeEventListener('dragover', this.handleTopDragOverCapture, true);
-    target.removeEventListener('drop', this.handleTopDrop);
-    target.removeEventListener('drop', this.handleTopDropCapture, true);
+    target[method2].removeEventListener(pref+'dragstart', this.handleTopDragStart);
+    target[method2].removeEventListener(pref+'dragstart', this.handleTopDragStartCapture, true);
+    target[method2].removeEventListener(pref+'dragend', this.handleTopDragEndCapture, true);
+    target[method2].removeEventListener(pref+'dragenter', this.handleTopDragEnter);
+    target[method2].removeEventListener(pref+'dragenter', this.handleTopDragEnterCapture, true);
+    target[method2].removeEventListener(pref+'dragleave', this.handleTopDragLeaveCapture, true);
+    target[method2].removeEventListener(pref+'dragover', this.handleTopDragOver);
+    target[method2].removeEventListener(pref+'dragover', this.handleTopDragOverCapture, true);
+    target[method2].removeEventListener(pref+'drop', this.handleTopDrop);
+    target[method2].removeEventListener(pref+'drop', this.handleTopDropCapture, true);
   }
 
   connectDragPreview(sourceId, node, options) {
