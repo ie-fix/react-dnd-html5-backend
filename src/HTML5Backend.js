@@ -6,6 +6,14 @@ import { getNodeClientOffset, getEventClientOffset, getDragPreviewOffset } from 
 import { createNativeDragSource, matchNativeItemType } from './NativeDragSources';
 import * as NativeTypes from './NativeTypes';
 
+let method = "addEventListener";
+let method2 = "removeEventListener";
+let pref   = "";
+if(!target.addEventListener){
+  method = "attachEvent";
+  method2 ="detachEvent";
+  pref = "on";
+}
 export default class HTML5Backend {
   constructor(manager) {
     this.actions = manager.getActions();
@@ -54,14 +62,6 @@ export default class HTML5Backend {
     this.constructor.isSetUp = false;
     this.removeEventListeners(window);
     this.clearCurrentDragSourceNode();
-  }
-  let method = "addEventListener";
-  let method2 = "removeEventListener";
-  let pref   = "";
-  if(!target.addEventListener){
-    method = "attachEvent";
-    method2 ="detachEvent";
-    pref = "on";
   }
 
   addEventListeners(target) {
