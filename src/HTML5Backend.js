@@ -9,7 +9,7 @@ import * as NativeTypes from './NativeTypes';
 let method = "addEventListener";
 let method2 = "removeEventListener";
 let pref   = "";
-if(!target.addEventListener){
+if(!window.addEventListener){
   method = "attachEvent";
   method2 ="detachEvent";
   pref = "on";
